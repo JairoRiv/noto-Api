@@ -1,14 +1,18 @@
 const express = require('express');
-const { notesMock } = require('../utils/mock/notes');
+const NotesServices = require('../services/notes');
 
 //Create the CRUD function
 const notesApi = (app) => {
   const router = express.Router();
   app.use('/api/notes', router);
 
+  const notesService = new NotesServices();
+
   router.get('/', async (req, res, next) => {
+    const { tags } = req.query;
+
     try {
-      const notes = await Promise.resolve(notesMock);
+      const notes = await notesService.getNotes({ tags });
 
       res.status(200).json({
         data: notes,
@@ -20,8 +24,10 @@ const notesApi = (app) => {
   });
 
   router.get('/:noteId', async (req, res, next) => {
+    const { noteId } = req.params;
+
     try {
-      const note = await Promise.resolve(notesMock[0]);
+      const note = await notesService.getNote({ noteId });
 
       res.status(200).json({
         data: note,
@@ -33,8 +39,10 @@ const notesApi = (app) => {
   });
 
   router.post('/', async (req, res, next) => {
+    const { body: note } = req;
+
     try {
-      const createNoteId = await Promise.resolve(notesMock[0].id);
+      const createNoteId = await notesService.createNote({ note });
 
       res.status(201).json({
         data: createNoteId,
@@ -46,8 +54,11 @@ const notesApi = (app) => {
   });
 
   router.put('/:noteId', async (req, res, next) => {
+    const { noteId } = req.params;
+    const { body: note } = req;
+
     try {
-      const updateNoteId = await Promise.resolve(notesMock[0].id);
+      const updateNoteId = await notesService.updateNote({ noteId, note });
 
       res.status(200).json({
         data: updateNoteId,
@@ -59,8 +70,10 @@ const notesApi = (app) => {
   });
 
   router.delete('/:noteId', async (req, res, next) => {
+    const { noteId } = req.params;
+
     try {
-      const deleteNoteId = await Promise.resolve(notesMock[0].id);
+      const deleteNoteId = await notesService.deleteNote({ noteId });
 
       res.status(200).json({
         data: deleteNoteId,
