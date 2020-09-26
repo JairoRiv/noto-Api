@@ -1,28 +1,38 @@
-const { notesMock } = require('../utils/mock/notes');
+const MongoLib = require('../lib/mongo');
 
 class NotesServices {
-  async getNotes() {
-    const notes = await Promise.resolve(notesMock);
+  constructor() {
+    this.collection = 'notes';
+    this.mongoDB = new MongoLib();
+  }
+
+  async getNotes({ tags }) {
+    const query = tags && { tags: { $in: tags } };
+    const notes = await this.mongoDB.getAll(this.collection, query);
     return notes || [];
   }
 
-  async getNote() {
-    const note = await Promise.resolve(notesMock[0]);
+  async getNote({ noteId }) {
+    const note = await this.mongoDB.get(this.collection, noteId);
     return note || [];
   }
 
-  async createNote() {
-    const createNoteId = await Promise.resolve(notesMock[1].id);
+  async createNote({ note }) {
+    const createNoteId = await this.mongoDB.create(this.collection, note);
     return createNoteId;
   }
 
-  async updateNote() {
-    const updateNoteId = await Promise.resolve(notesMock[2].id);
+  async updateNote({ noteId, note }) {
+    const updateNoteId = await this.mongoDB.update(
+      this.collection,
+      noteId,
+      note
+    );
     return updateNoteId;
   }
 
-  async deleteNote() {
-    const deleteNoteId = await Promise.resolve(notesMock[3].id);
+  async deleteNote({noteId}) {
+    const deleteNoteId = await this.mongoDB.delete(this.collection, noteId)
     return deleteNoteId;
   }
 }
