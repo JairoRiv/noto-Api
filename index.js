@@ -4,6 +4,9 @@ const app = express();
 const { config } = require('./config/index');
 const notesApi = require('./routes/notes');
 
+//Middleware
+app.use(express.json()) //Body parser
+
 //Routes
 notesApi(app);
 
