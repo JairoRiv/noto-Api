@@ -4,7 +4,11 @@ const app = express();
 const { config } = require('./config/index');
 const notesApi = require('./routes/notes');
 
-const { logErrors, errorHandler } = require('./utils/middleware/errorHandler');
+const {
+  logErrors,
+  errorHandler,
+  wrapErrors,
+} = require('./utils/middleware/errorHandler');
 
 //Middleware
 app.use(express.json()); //Body parser
@@ -12,8 +16,9 @@ app.use(express.json()); //Body parser
 //Routes
 notesApi(app);
 
-//Error Midleware
+//Errors Midleware
 app.use(logErrors);
+app.use(wrapErrors);
 app.use(errorHandler);
 
 //init express server
