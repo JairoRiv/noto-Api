@@ -9,12 +9,16 @@ const {
   errorHandler,
   wrapErrors,
 } = require('./utils/middleware/errorHandler');
+const notFoundHandler = require('./utils/middleware/notFoundHandler');
 
 //Middleware
 app.use(express.json()); //Body parser
 
 //Routes
 notesApi(app);
+
+//Catch 404
+app.use(notFoundHandler);
 
 //Errors Midleware
 app.use(logErrors);
