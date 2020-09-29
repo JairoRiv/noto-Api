@@ -20,4 +20,4 @@ const updateNoteSchema = {
   updateDate: noteDateSchema.required(),
 };
 
-module.exports = { createNoteSchema, updateNoteSchema };
+module.exports = { noteIdSchema, createNoteSchema, updateNoteSchema };
