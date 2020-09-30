@@ -26,7 +26,7 @@ const notesApi = (app) => {
   const notesService = new NotesServices();
 
   router.get('/', async (req, res, next) => {
-    cacheResponse(set, FIVE_MINUTES_IN_SECONDS);
+    cacheResponse(res, FIVE_MINUTES_IN_SECONDS);
     const { tags } = req.query;
 
     try {
