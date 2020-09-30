@@ -11,6 +11,13 @@ const {
 //Import middleware for validate schema
 const validationHandler = require('../utils/middleware/validationHandler');
 
+//Import cache Control
+const cacheResponse = require('../utils/cacheResponse');
+const {
+  FIVE_MINUTES_IN_SECONDS,
+  SIXTY_MINUTES_IN_SECONDS,
+} = require('../utils/time');
+
 //Create the CRUD function
 const notesApi = (app) => {
   const router = express.Router();
@@ -19,6 +26,7 @@ const notesApi = (app) => {
   const notesService = new NotesServices();
 
   router.get('/', async (req, res, next) => {
+    cacheResponse(set, FIVE_MINUTES_IN_SECONDS);
     const { tags } = req.query;
 
     try {
@@ -37,6 +45,7 @@ const notesApi = (app) => {
     '/:noteId',
     validationHandler({ noteId: noteIdSchema }, 'params'),
     async (req, res, next) => {
+      cacheResponse(res, SIXTY_MINUTES_IN_SECONDS);
       const { noteId } = req.params;
 
       try {
