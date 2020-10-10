@@ -12,7 +12,7 @@ const createNoteSchema = {
   title: noteTitleSchema.required(),
   content: noteContentSchema.required(),
   email: noteEmailSchema.required(),
-  createDate: noteDateSchema.required(),
+  //createDate: noteDateSchema.required(),
 };
 
 const updateNoteSchema = {
@@ -20,7 +20,7 @@ const updateNoteSchema = {
   title: noteTitleSchema,
   content: noteContentSchema,
   email: noteEmailSchema,
-  updateDate: noteDateSchema.required(),
+  //updateDate: noteDateSchema.required(),
 };
 
 module.exports = { noteIdSchema, createNoteSchema, updateNoteSchema };
